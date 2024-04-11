@@ -19,6 +19,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+protected:
+	// Components
+
+	UPROPERTY(EditAnywhere, Category="Camera")
+	TObjectPtr<class USpringArmComponent> SpringArmComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, Category="Camera")
+	TObjectPtr<class UCameraComponent> CameraComponent = nullptr;
+	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<class USkeletalMeshComponent> Weapon = nullptr;
 };
