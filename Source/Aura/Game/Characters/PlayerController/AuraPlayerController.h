@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Aura/Game/Interaction/EnemyInterface.h"
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
@@ -20,13 +21,21 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void PlayerTick(float DeltaTime) override;
+
 	virtual void SetupInputComponent() override;
 private:
+	void Move(const struct FInputActionValue& InputActionValue);
+
+	void CursorTrace();
+
+protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<class UInputMappingContext> AuraContext = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<class UInputAction> MoveAction = nullptr;
 
-	void Move(const struct FInputActionValue& InputActionValue);
+	IEnemyInterface* ThisActor = nullptr;
+	IEnemyInterface* LastActor = nullptr;
 };

@@ -15,7 +15,22 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 
+	AAuraEnemy();
+
+	virtual void BeginPlay() override;
+
+	void ToggleActorHighlighting(bool bIsHighlight) const;
+	
 	virtual void HighlightActor() override;
 
 	virtual void UnHighlightActor() override;
+
+private:
+	void SetMeshes();
+
+	UPROPERTY()
+	TObjectPtr<class USkeletalMeshComponent> WeaponMesh = nullptr;
+
+	UPROPERTY()
+	TObjectPtr<class USkeletalMeshComponent> BodyMesh = nullptr;
 };

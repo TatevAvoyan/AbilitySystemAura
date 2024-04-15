@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "Aura/Game/Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -32,6 +33,13 @@ void AAuraPlayerController::BeginPlay()
 	SetInputMode(InputModeData);
 }
 
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
+}
+
 void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -55,5 +63,40 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		L_ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		L_ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if (CursorHit.bBlockingHit)
+	{
+		LastActor = ThisActor;
+		AActor* L_HitActor = CursorHit.GetActor();
+		ThisActor = Cast<IEnemyInterface>(L_HitActor);
+
+		if (LastActor == nullptr)
+		{
+			if (ThisActor != nullptr)
+			{
+				ThisActor->HighlightActor();
+			}
+		}
+		else // Last Actor is Valid
+		{
+			if (ThisActor == nullptr)
+			{
+				LastActor->UnHighlightActor();
+			}
+			else
+			{
+				if (LastActor != ThisActor)
+				{
+					LastActor->UnHighlightActor();
+					ThisActor->HighlightActor();
+				}
+			}
+		}
 	}
 }
