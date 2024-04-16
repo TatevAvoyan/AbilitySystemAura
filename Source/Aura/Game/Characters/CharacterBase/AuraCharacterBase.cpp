@@ -3,6 +3,7 @@
 
 #include "AuraCharacterBase.h"
 
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -27,4 +28,9 @@ void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
