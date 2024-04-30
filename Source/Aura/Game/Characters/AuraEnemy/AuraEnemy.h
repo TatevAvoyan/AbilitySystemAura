@@ -19,6 +19,7 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 
 	virtual void BeginPlay() override;
 
+	void  InitAbilityActorInfo();
 	void ToggleActorHighlighting(bool bIsHighlight) const;
 	
 	virtual void HighlightActor() override;
