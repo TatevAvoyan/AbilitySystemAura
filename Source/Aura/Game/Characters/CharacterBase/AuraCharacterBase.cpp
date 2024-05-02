@@ -4,7 +4,6 @@
 #include "AuraCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
-#include "Aura/Game/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Game/Characters/PlayerState/AuraPlayerState.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
