@@ -22,13 +22,8 @@ protected:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	virtual void PossessedBy(AController* NewController) override;
-
-	virtual void OnRep_PlayerState() override;
-
 	class UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-	void InitAbilityActorInfo();
 protected:
 	// Components
 

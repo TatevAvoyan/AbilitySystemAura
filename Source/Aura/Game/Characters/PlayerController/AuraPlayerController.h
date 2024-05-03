@@ -29,7 +29,7 @@ private:
 
 	void CursorTrace();
 
-protected:
+private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<class UInputMappingContext> AuraContext = nullptr;
 
