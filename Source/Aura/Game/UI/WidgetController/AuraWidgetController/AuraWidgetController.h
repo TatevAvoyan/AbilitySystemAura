@@ -44,6 +44,8 @@ public:
 	void SetWidgetControlParams(const FWidgetControllerParams& WCParams);
 
 	virtual void BroadcastInitialValues();
+
+	virtual void BindCallbacksToDependencies();
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<class APlayerController> PlayerController = nullptr;
