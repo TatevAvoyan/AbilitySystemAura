@@ -75,7 +75,7 @@ void AAuraPlayerController::CursorTrace()
 	{
 		LastActor = ThisActor;
 		AActor* L_HitActor = CursorHit.GetActor();
-		ThisActor = Cast<IEnemyInterface>(L_HitActor);
+		ThisActor = L_HitActor;
 
 		if (LastActor == nullptr)
 		{

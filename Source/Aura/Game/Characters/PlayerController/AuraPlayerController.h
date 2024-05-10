@@ -36,6 +36,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<class UInputAction> MoveAction = nullptr;
 
-	IEnemyInterface* ThisActor = nullptr;
-	IEnemyInterface* LastActor = nullptr;
+
+	TScriptInterface<IEnemyInterface> ThisActor = nullptr;
+	TScriptInterface<IEnemyInterface> LastActor = nullptr;
 };
