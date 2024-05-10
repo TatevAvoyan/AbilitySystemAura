@@ -32,4 +32,16 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class USphereComponent> SphereComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, Category="Setup")
+	bool bIsMana = false;
+
+	UPROPERTY(EditAnywhere, Category="Setup")
+	bool bIsAddMana = false;
+
+	UPROPERTY(EditAnywhere, Category="Setup")
+	bool bIsHealth = false;
+
+	UPROPERTY(EditAnywhere, Category="Setup")
+	bool bIsAddHealth = false;
 };
