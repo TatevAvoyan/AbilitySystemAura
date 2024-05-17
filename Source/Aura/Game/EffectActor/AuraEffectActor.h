@@ -19,29 +19,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	UFUNCTION()
-	virtual void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTarget(AActor* InTarget, TSubclassOf<class UGameplayEffect> InGameplayEffectClass);
 	
-public:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<class UStaticMeshComponent> Mesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<class USphereComponent> SphereComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, Category="Setup")
-	bool bIsMana = false;
-
-	UPROPERTY(EditAnywhere, Category="Setup")
-	bool bIsAddMana = false;
-
-	UPROPERTY(EditAnywhere, Category="Setup")
-	bool bIsHealth = false;
-
-	UPROPERTY(EditAnywhere, Category="Setup")
-	bool bIsAddHealth = false;
+	UPROPERTY(EditAnywhere, Category = "Applied Effects")
+	TSubclassOf<class UGameplayEffect> InstantGameplayEffectClass = nullptr;
 };
