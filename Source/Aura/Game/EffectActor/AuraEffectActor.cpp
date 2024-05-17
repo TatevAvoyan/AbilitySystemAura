@@ -21,11 +21,11 @@ void AAuraEffectActor::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AAuraEffectActor::ApplyEffectToTarget(AActor* InTarget, TSubclassOf<UGameplayEffect> InGameplayEffectClass)
+void AAuraEffectActor::ApplyEffectToTarget(AActor* InTargetActor, TSubclassOf<UGameplayEffect> InGameplayEffectClass)
 {
 	if (InGameplayEffectClass)
 	{
-		if (UAbilitySystemComponent* L_TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InTarget);
+		if (UAbilitySystemComponent* L_TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InTargetActor);
 			IsValid(L_TargetASC))
 		{
 			FGameplayEffectContextHandle EffectContextHandle = L_TargetASC->MakeEffectContext();
@@ -34,6 +34,8 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* InTarget, TSubclassOf<UGamepl
 				InGameplayEffectClass, 1.f, EffectContextHandle);
 
 			L_TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+
+			Destroy();
 		}
 	}
 }
