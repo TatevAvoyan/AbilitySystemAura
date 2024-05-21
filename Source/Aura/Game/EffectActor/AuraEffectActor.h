@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
 #include "AuraEffectActor.generated.h"
 
@@ -37,11 +38,11 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnOverlap(AActor* TargetActor);
 
-	UFUNCTION(Blueprintable)
+	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
 	
 	UFUNCTION(BlueprintCallable)
-	void ApplyEffectToTarget(AActor* InTargetActor, TSubclassOf<class UGameplayEffect> InGameplayEffectClass, bool InIsDestroyActor);
+	void ApplyEffectToTarget(AActor* InTargetActor, TSubclassOf<class UGameplayEffect> InGameplayEffectClass);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
 	bool bDestroyOnEffectRemoval = false;
@@ -66,4 +67,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
 	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnEndOverlap;
+
+	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
 };
