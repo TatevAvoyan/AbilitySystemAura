@@ -44,10 +44,16 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		{
 			for (const FGameplayTag& Tag  : AssetTags)
 			{
-				const FString Msg = "GE Tag: " + Tag.ToString();
-				UKismetSystemLibrary::PrintString(this, Msg);
+				// "Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
+				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
 
-				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+				if (bool IsMatching = Tag.MatchesTag(MessageTag); IsMatching)
+				{
+					if (FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag))
+					{
+						MessageWidgetRowDelegate.Broadcast(*Row);
+					}
+				}
 			}		
 		}
 	);
