@@ -5,6 +5,7 @@
 
 #include "Aura/Game/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Game/AbilitySystem/AttributeSet/AuraAttributeSet.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -39,12 +40,14 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(L_MaxManaAttributeData).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-			[](const FGameplayTagContainer& AssetTags)
+			[this](const FGameplayTagContainer& AssetTags)
 		{
 			for (const FGameplayTag& Tag  : AssetTags)
 			{
 				const FString Msg = "GE Tag: " + Tag.ToString();
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Msg);
+				UKismetSystemLibrary::PrintString(this, Msg);
+
+				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
 			}		
 		}
 	);

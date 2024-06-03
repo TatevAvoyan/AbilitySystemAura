@@ -64,4 +64,10 @@ protected:
 	void MaxHealthChanged(const struct FOnAttributeChangeData& Data) const;
 	void ManaChanged(const struct FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const struct FOnAttributeChangeData& Data) const;
+
+	template<typename T>
+	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
+	{
+		return DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
+	};
 };
