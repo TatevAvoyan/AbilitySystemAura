@@ -41,4 +41,6 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<class UAttributeSet> AttributeSet = nullptr;
+
+	virtual void InitAbilityActorInfo();
 };
