@@ -43,4 +43,10 @@ protected:
 	TObjectPtr<class UAttributeSet> AttributeSet = nullptr;
 
 	virtual void InitAbilityActorInfo();
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
+	TSubclassOf<class UGameplayEffect> DefaultPrimaryAttributes;
+
+	void InitializePrimaryAttributes() const;
 };
