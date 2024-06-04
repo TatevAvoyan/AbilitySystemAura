@@ -47,6 +47,21 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		const float Health = GetHealth();
+		const float MaxHealth = GetMaxHealth();
+		const float ClampValue = FMath::Clamp(Health, 0.f, MaxHealth);
+		SetHealth(ClampValue);
+	}
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		const float Mana = GetMana();
+		const float MaxMana = GetMaxMana();
+		const float ClampValue = FMath::Clamp(Mana, 0.f, MaxMana);
+		SetMana(ClampValue);
+	}
 }
 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
