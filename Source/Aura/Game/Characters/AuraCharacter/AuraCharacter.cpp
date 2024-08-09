@@ -65,3 +65,14 @@ void AAuraCharacter::InitAbilityActorInfo()
 	}
 	InitializeDefaultAttributes();
 }
+
+int32 AAuraCharacter::GetPlayerLevel()
+{
+	int32 R_Level = 0;
+	if (const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>(); IsValid(AuraPlayerState))
+	{
+		R_Level = AuraPlayerState->GetPLayerLevel();
+	}
+
+	return R_Level;
+}

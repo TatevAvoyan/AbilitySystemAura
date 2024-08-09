@@ -14,21 +14,27 @@ UCLASS()
 class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
-
+public:
 	AAuraEnemy();
 
-	virtual void BeginPlay() override;
+	void ToggleActorHighlighting(bool bIsHighlight) const;
+	void SetMeshes();
 
+	/** Enemy Interface */
+	virtual void HighlightActor() override;
+	virtual void UnHighlightActor() override;
+	/** end Enemy Interface */
+
+
+	/** Combat Interface */
+	virtual int32 GetPlayerLevel() override;
+	/** end Combat Interface */
+protected:
+	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 
-	void ToggleActorHighlighting(bool bIsHighlight) const;
-	
-	virtual void HighlightActor() override;
-
-	virtual void UnHighlightActor() override;
-
-private:
-	void SetMeshes();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	int32 Level = 1;
 
 	UPROPERTY()
 	TObjectPtr<class USkeletalMeshComponent> WeaponMesh = nullptr;

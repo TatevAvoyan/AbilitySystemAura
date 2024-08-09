@@ -56,6 +56,11 @@ void AAuraEnemy::UnHighlightActor()
 	ToggleActorHighlighting(false);
 }
 
+int32 AAuraEnemy::GetPlayerLevel()
+{
+	return Level;
+}
+
 void AAuraEnemy::SetMeshes()
 {
 	BodyMesh = GetMesh();
