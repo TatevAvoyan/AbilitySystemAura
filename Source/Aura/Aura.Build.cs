@@ -16,6 +16,9 @@ public class Aura : ModuleRules
 			"GameplayTasks"
 		});
 
+		// Added Aura into PublicIncludePaths see from Aura folder c++ include.
+		PublicIncludePaths.Add("Aura");
+
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		
