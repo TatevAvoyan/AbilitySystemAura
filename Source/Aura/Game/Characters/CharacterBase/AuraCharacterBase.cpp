@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Game/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -57,4 +58,14 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
+}
+
+void AAuraCharacterBase::AddCharacterAbilities()
+{
+	if (HasAuthority())
+	{
+		UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+
+		AuraASC->AddCharacterAbilities(StartupAbilities);
+	}
 }

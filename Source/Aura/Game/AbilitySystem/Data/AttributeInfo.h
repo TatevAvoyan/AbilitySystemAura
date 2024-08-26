@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
-#include "Game/AuraGameplayTags.h"
 #include "AttributeInfo.generated.h"
 
 USTRUCT(BlueprintType)
