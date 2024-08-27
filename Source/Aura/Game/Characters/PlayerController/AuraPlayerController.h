@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+struct FGameplayTag;
+class UAuraInputConfig;
 /**
  * 
  */
@@ -39,4 +41,11 @@ private:
 
 	TScriptInterface<IEnemyInterface> ThisActor = nullptr;
 	TScriptInterface<IEnemyInterface> LastActor = nullptr;
+
+	static void AbilityInputTagPressed(FGameplayTag InputTag);
+	static void AbilityInputTagReleased(FGameplayTag InputTag);
+	static void AbilityInputTagHeld(FGameplayTag InputTag);
+	
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UAuraInputConfig> InputConfig;
 };
