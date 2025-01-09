@@ -24,8 +24,40 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(TArray<TSubclassOf<UGame
 	}
 }
 
+void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InInputTag)
+{
+	if (InInputTag.IsValid())
+	{
+		for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+		{
+			if (AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
+			{
+				AbilitySpecInputPressed(AbilitySpec);
+				if (!AbilitySpec.IsActive())
+				{
+					TryActivateAbility(AbilitySpec.Handle);
+				}
+			}
+		}
+	}
+}
+
+void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InInputTag)
+{
+	if (InInputTag.IsValid())
+	{
+		for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+		{
+			if (AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
+			{
+				AbilitySpecInputReleased(AbilitySpec);
+			}
+		}
+	}
+}
+
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
-	const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
+                                                const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);

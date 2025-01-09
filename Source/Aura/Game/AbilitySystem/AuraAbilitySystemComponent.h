@@ -45,6 +45,9 @@ public:
 	 */
 	void AddCharacterAbilities(TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 
+	void AbilityInputTagHeld(const FGameplayTag& InInputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InInputTag);
+	
 protected:
 	/**
 	 * @brief Callback for when a gameplay effect is applied to this ability system component.
