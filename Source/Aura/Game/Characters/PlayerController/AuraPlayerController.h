@@ -42,9 +42,9 @@ private:
 	TScriptInterface<IEnemyInterface> ThisActor = nullptr;
 	TScriptInterface<IEnemyInterface> LastActor = nullptr;
 
-	static void AbilityInputTagPressed(FGameplayTag InputTag);
-	static void AbilityInputTagReleased(FGameplayTag InputTag);
-	static void AbilityInputTagHeld(FGameplayTag InputTag);
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
 	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
