@@ -9,12 +9,16 @@
 #include "GameplayTagContainer.h"
 #include "InputActionValue.h"
 #include "Aura/Game/Interaction/EnemyInterface.h"
+#include "Components/SplineComponent.h"
+#include "Game/AuraGameplayTags.h"
 #include "Game/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Game/Input/AuraInputComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+
+	SplineComponent = CreateDefaultSubobject<USplineComponent>("SplineComponent");
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -107,7 +111,11 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting = ThisActor ? true : false;
+		bAutoRunning = false;
+	}
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -120,9 +128,37 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if (GetAuraAbilitySystemComponent() != nullptr)
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+		if (GetAuraAbilitySystemComponent() != nullptr)
+		{
+			GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
+
+	if (bTargeting)
+	{
+		if (GetAuraAbilitySystemComponent() != nullptr)
+		{
+			GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult HitResult;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
+		{
+			CachedDestination =	HitResult.ImpactPoint;
+		}
+
+		if (APawn* ControledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControledPawn->GetActorLocation()).GetSafeNormal();
+			ControledPawn->AddMovementInput(WorldDirection);
+		}
 	}
 }
 
