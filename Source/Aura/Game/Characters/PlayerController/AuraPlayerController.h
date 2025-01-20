@@ -58,7 +58,7 @@ private:
 
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.0f;
-	float ShortPressThreshold = 0.0f;
+	float ShortPressThreshold = 0.5f;
 	bool bAutoRunning = false;
 	bool bTargeting = false;
 	
@@ -67,4 +67,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> SplineComponent = nullptr;
+
+	void AutoRun();
 };

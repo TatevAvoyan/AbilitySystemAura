@@ -8,6 +8,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
 #include "InputActionValue.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "Aura/Game/Interaction/EnemyInterface.h"
 #include "Components/SplineComponent.h"
 #include "Game/AuraGameplayTags.h"
@@ -46,6 +48,26 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	CursorTrace();
+
+	AutoRun();
+}
+
+void AAuraPlayerController::AutoRun()
+{
+	if (!bAutoRunning) return;
+
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		const FVector LocationOnSpline = SplineComponent->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = SplineComponent->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+		
+		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bAutoRunning = false;
+		}
+	}
 }
 
 void AAuraPlayerController::SetupInputComponent()
@@ -120,9 +142,43 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if (GetAuraAbilitySystemComponent() != nullptr)
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+		if (GetAuraAbilitySystemComponent() != nullptr)
+		{
+			GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+		}
+		return;
+	}
+
+	if (bTargeting)
+	{
+		if (GetAuraAbilitySystemComponent() != nullptr)
+		{
+			GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+		}
+	}
+	else
+	{
+		APawn* ControledPawn = GetPawn();
+		if (FollowTime <= ShortPressThreshold && ControledPawn)
+		{
+			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(
+				this, ControledPawn->GetActorLocation(), CachedDestination))
+			{
+				SplineComponent->ClearSplinePoints();
+				for (const FVector& PointLoc : NavPath->PathPoints)
+				{
+					SplineComponent->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
+					DrawDebugSphere(GetWorld(), PointLoc, 10.f, 10, FColor::Green, false, 5.f);					
+					CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
+				}
+				bAutoRunning = true;
+			}
+
+			FollowTime = 0.f;
+			bTargeting = false;			
+		}
 	}
 }
 

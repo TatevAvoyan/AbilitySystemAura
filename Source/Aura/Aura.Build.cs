@@ -13,7 +13,8 @@ public class Aura : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
 			"GameplayTags",
-			"GameplayTasks"
+			"GameplayTasks",
+			"NavigationSystem"
 		});
 
 		// Added Aura into PublicIncludePaths see from Aura folder c++ include.
