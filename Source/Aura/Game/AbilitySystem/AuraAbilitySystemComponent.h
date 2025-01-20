@@ -45,19 +45,38 @@ public:
 	 */
 	void AddCharacterAbilities(TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 
+	/**
+	 * @brief Handles the logic for when an ability input tag is held.
+	 *
+	 * This function checks if the provided input tag is valid and iterates through the activatable abilities.
+	 * If an ability matches the input tag and is not yet active, it attempts to activate the ability.
+	 *
+	 * @param InInputTag The gameplay tag representing the input held by the player.
+	 */
 	void AbilityInputTagHeld(const FGameplayTag& InInputTag);
+
+	/**
+	 * @brief Handles the release of an input associated with a gameplay ability.
+	 *
+	 * This function is responsible for iterating through the activatable abilities and identifying those
+	 * that match the specified input tag. If a matching ability is found, the input release logic for that ability is executed.
+	 *
+	 * @param InInputTag The gameplay tag associated with the input that was released.
+	 */
 	void AbilityInputTagReleased(const FGameplayTag& InInputTag);
 	
 protected:
 	/**
-	 * @brief Callback for when a gameplay effect is applied to this ability system component.
+	 * @brief Notifies the client about an applied gameplay effect.
 	 *
-	 * This method is triggered when a gameplay effect is successfully applied to the component.
-	 * It extracts the asset tags from the effect specification and broadcasts them.
+	 * This function is called on the client to provide information about a gameplay effect
+	 * that was applied to an ability system component. It includes the effect specification
+	 * and the handle representing the active effect.
 	 *
-	 * @param AbilitySystemComponent The ability system component to which the effect is applied.
-	 * @param EffectSpec The gameplay effect specification containing the details of the applied effect.
-	 * @param ActiveEffectHandle The handle for the active gameplay effect that was applied.
+	 * @param AbilitySystemComponent The ability system component to which the effect was applied.
+	 * @param EffectSpec The specification of the gameplay effect that was applied.
+	 * @param ActiveEffectHandle The handle representing the active gameplay effect.
 	 */
-	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+	UFUNCTION(Client, Reliable)
+	void Client_EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 };

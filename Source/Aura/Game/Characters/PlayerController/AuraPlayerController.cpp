@@ -98,7 +98,6 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (CursorHit.bBlockingHit)
 	{
@@ -106,27 +105,10 @@ void AAuraPlayerController::CursorTrace()
 		AActor* L_HitActor = CursorHit.GetActor();
 		ThisActor = L_HitActor;
 
-		if (LastActor == nullptr)
+		if (LastActor != ThisActor)
 		{
-			if (ThisActor != nullptr)
-			{
-				ThisActor->HighlightActor();
-			}
-		}
-		else // Last Actor is Valid
-		{
-			if (ThisActor == nullptr)
-			{
-				LastActor->UnHighlightActor();
-			}
-			else
-			{
-				if (LastActor != ThisActor)
-				{
-					LastActor->UnHighlightActor();
-					ThisActor->HighlightActor();
-				}
-			}
+			if (LastActor) LastActor->UnHighlightActor();
+			if (ThisActor) ThisActor->HighlightActor();
 		}
 	}
 }
@@ -160,8 +142,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 	else
 	{
-		APawn* ControledPawn = GetPawn();
-		if (FollowTime <= ShortPressThreshold && ControledPawn)
+		if (const APawn* ControledPawn = GetPawn(); FollowTime <= ShortPressThreshold && ControledPawn)
 		{
 			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(
 				this, ControledPawn->GetActorLocation(), CachedDestination))
@@ -170,7 +151,6 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				for (const FVector& PointLoc : NavPath->PathPoints)
 				{
 					SplineComponent->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLoc, 10.f, 10, FColor::Green, false, 5.f);					
 					CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				}
 				bAutoRunning = true;
@@ -204,10 +184,9 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
 
-		FHitResult HitResult;
-		if (GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
+		if (CursorHit.bBlockingHit)
 		{
-			CachedDestination =	HitResult.ImpactPoint;
+			CachedDestination =	CursorHit.ImpactPoint;
 		}
 
 		if (APawn* ControledPawn = GetPawn())
