@@ -124,6 +124,30 @@ protected:
 	TObjectPtr<class USkeletalMeshComponent> Weapon = nullptr;
 
 	/**
+	 * @property FName WeaponTipSocketName
+	 * @brief Name of the socket located at the tip of the weapon.
+	 *
+	 * This property is used to identify the socket on a weapon, typically used
+	 * for gameplay-related functionalities such as spawning effects, determining
+	 * hit points, or aligning objects with the weapon's tip.
+	 *
+	 * It is editable in the editor under the "Combat" category, allowing designers
+	 * to specify or adjust the relevant socket name dynamically.
+	 */
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName WeaponTipSocketName;
+
+	/**
+	 * @brief Retrieves the location of the combat socket attached to the weapon.
+	 *
+	 * This method returns the world-space location of the specified combat socket on the character's weapon.
+	 * It is used for determining positions relevant to combat, such as attack origins or projectile spawning points.
+	 *
+	 * @return The FVector representing the world-space location of the combat socket.
+	 */
+	virtual FVector GetCombatSocketLocation() override;
+	
+	/**
 	 * A pointer to the AbilitySystemComponent associated with this character.
 	 *
 	 * This component is responsible for managing abilities, attributes, and gameplay effects

@@ -41,4 +41,6 @@ public:
 	 * @return The integer level of the player.
 	 */
 	virtual int32 GetPlayerLevel();
+
+	virtual FVector GetCombatSocketLocation();
 };

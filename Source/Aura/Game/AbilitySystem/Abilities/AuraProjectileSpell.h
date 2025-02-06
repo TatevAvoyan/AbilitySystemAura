@@ -16,5 +16,7 @@ class AURA_API UAuraProjectileSpell : public UAuraGameplayAbility
 
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AuraProjectileSpell")
+	TSubclassOf<class AAuraProjectile> ProjectileClass = nullptr;
 };
